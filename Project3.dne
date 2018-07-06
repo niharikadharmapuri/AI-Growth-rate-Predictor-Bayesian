@@ -1,0 +1,462 @@
+// ~->[DNET-1]->~
+
+// File created by GmytrasiewiczP_2 at UIC using Netica 5.22x on Oct 27, 2017 at 01:32:33 UTC.
+
+bnet Project3 {
+AutoCompile = TRUE;
+autoupdate = TRUE;
+whenchanged = 1509065829;
+
+visual V1 {
+	defdispform = BELIEFBARS;
+	nodelabeling = TITLE;
+	NodeMaxNumEntries = 50;
+	nodefont = font {shape= "Arial"; size= 9;};
+	linkfont = font {shape= "Arial"; size= 9;};
+	windowposn = (117, 62, 1153, 600);
+	resolution = 72;
+	drawingbounds = (1472, 800);
+	showpagebreaks = FALSE;
+	usegrid = TRUE;
+	gridspace = (6, 6);
+	NodeSet Node {BuiltIn = 1; Color = 0x00e1e1e1;};
+	NodeSet Nature {BuiltIn = 1; Color = 0x00f8eed2;};
+	NodeSet Deterministic {BuiltIn = 1; Color = 0x00d3caa6;};
+	NodeSet Finding {BuiltIn = 1; Color = 0x00c8c8c8;};
+	NodeSet Constant {BuiltIn = 1; Color = 0x00ffffff;};
+	NodeSet ConstantValue {BuiltIn = 1; Color = 0x00ffffb4;};
+	NodeSet Utility {BuiltIn = 1; Color = 0x00ffbdbd;};
+	NodeSet Decision {BuiltIn = 1; Color = 0x00dee8ff;};
+	NodeSet Documentation {BuiltIn = 1; Color = 0x00f0fafa;};
+	NodeSet Title {BuiltIn = 1; Color = 0x00ffffff;};
+	PrinterSetting A {
+		margins = (1270, 1270, 1270, 1270);
+		};
+	};
+
+node Inflation {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (High, Low);
+	parents = ();
+	probs = 
+		// High         Low          
+		  (0.7,         0.3);
+	whenchanged = 1509038946;
+	belief = (0.7, 0.3);
+	visual V1 {
+		center = (288, 102);
+		height = 1;
+		};
+	};
+
+node NaturalDisasters {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (High, Low);
+	parents = ();
+	probs = 
+		// High         Low          
+		  (0.6,         0.4);
+	whenchanged = 1509037572;
+	belief = (0.6, 0.4);
+	visual V1 {
+		center = (84, 342);
+		height = 8;
+		};
+	};
+
+node MonetaryPolicy {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (FavourabletoGrowth, Unfavourable);
+	parents = ();
+	probs = 
+		// FavourabletoGrow Unfavourable 
+		  (0.5,         0.5);
+	whenchanged = 1509037363;
+	belief = (0.5, 0.5);
+	visual V1 {
+		center = (762, 96);
+		height = 3;
+		};
+	};
+
+node FiscalPolicy {
+	kind = NATURE;
+	discrete = TRUE;
+	states = (HighTaxes, LowTaxes);
+	parents = ();
+	whenchanged = 1508955247;
+	belief = (0.5, 0.5);
+	visual V1 {
+		center = (1032, 96);
+		height = 4;
+		};
+	};
+
+node Rainfall {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (High, Low);
+	parents = ();
+	probs = 
+		// High         Low          
+		  (0.4,         0.6);
+	whenchanged = 1509037664;
+	belief = (0.4, 0.6);
+	visual V1 {
+		center = (234, 210);
+		height = 16;
+		};
+	};
+
+node Agriculture {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (High, Low);
+	parents = (NaturalDisasters, Inflation, MonetaryPolicy, FiscalPolicy, Rainfall);
+	probs = 
+		// High         Low           // NaturalDisasters Inflation MonetaryPolicy   FiscalPolicy Rainfall 
+		  (0.9,         0.1,          // High             High      FavourabletoGrow HighTaxes    High     
+		   0.85,        0.15,         // High             High      FavourabletoGrow HighTaxes    Low      
+		   0.8,         0.2,          // High             High      FavourabletoGrow LowTaxes     High     
+		   0.75,        0.25,         // High             High      FavourabletoGrow LowTaxes     Low      
+		   0.7,         0.3,          // High             High      Unfavourable     HighTaxes    High     
+		   0.65,        0.35,         // High             High      Unfavourable     HighTaxes    Low      
+		   0.6,         0.4,          // High             High      Unfavourable     LowTaxes     High     
+		   0.55,        0.45,         // High             High      Unfavourable     LowTaxes     Low      
+		   0.5,         0.5,          // High             Low       FavourabletoGrow HighTaxes    High     
+		   0.45,        0.55,         // High             Low       FavourabletoGrow HighTaxes    Low      
+		   0.4,         0.6,          // High             Low       FavourabletoGrow LowTaxes     High     
+		   0.35,        0.65,         // High             Low       FavourabletoGrow LowTaxes     Low      
+		   0.3,         0.7,          // High             Low       Unfavourable     HighTaxes    High     
+		   0.25,        0.75,         // High             Low       Unfavourable     HighTaxes    Low      
+		   0.2,         0.8,          // High             Low       Unfavourable     LowTaxes     High     
+		   0.15,        0.85,         // High             Low       Unfavourable     LowTaxes     Low      
+		   0.9,         0.1,          // Low              High      FavourabletoGrow HighTaxes    High     
+		   0.85,        0.15,         // Low              High      FavourabletoGrow HighTaxes    Low      
+		   0.8,         0.2,          // Low              High      FavourabletoGrow LowTaxes     High     
+		   0.75,        0.25,         // Low              High      FavourabletoGrow LowTaxes     Low      
+		   0.7,         0.3,          // Low              High      Unfavourable     HighTaxes    High     
+		   0.65,        0.35,         // Low              High      Unfavourable     HighTaxes    Low      
+		   0.6,         0.4,          // Low              High      Unfavourable     LowTaxes     High     
+		   0.55,        0.45,         // Low              High      Unfavourable     LowTaxes     Low      
+		   0.5,         0.5,          // Low              Low       FavourabletoGrow HighTaxes    High     
+		   0.45,        0.55,         // Low              Low       FavourabletoGrow HighTaxes    Low      
+		   0.4,         0.6,          // Low              Low       FavourabletoGrow LowTaxes     High     
+		   0.45,        0.55,         // Low              Low       FavourabletoGrow LowTaxes     Low      
+		   0.3,         0.7,          // Low              Low       Unfavourable     HighTaxes    High     
+		   0.25,        0.75,         // Low              Low       Unfavourable     HighTaxes    Low      
+		   0.2,         0.8,          // Low              Low       Unfavourable     LowTaxes     High     
+		   0.15,        0.85);        // Low              Low       Unfavourable     LowTaxes     Low      ;
+	numcases = 1;
+	whenchanged = 1509065808;
+	belief = (0.6018, 0.3982);
+	visual V1 {
+		center = (378, 438);
+		height = 6;
+		};
+	};
+
+node UndergroundMarket {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (High, Low);
+	parents = ();
+	probs = 
+		// High         Low          
+		  (0.7,         0.3);
+	whenchanged = 1509037782;
+	belief = (0.7, 0.3);
+	visual V1 {
+		center = (1062, 594);
+		height = 15;
+		};
+	};
+
+node FOREX {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (Favourable, Unfavourable);
+	parents = ();
+	probs = 
+		// Favourable   Unfavourable 
+		  (0.7,         0.3);
+	whenchanged = 1509037383;
+	belief = (0.7, 0.3);
+	visual V1 {
+		center = (1278, 90);
+		height = 5;
+		};
+	};
+
+node Unemployment {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (High, Low);
+	parents = ();
+	probs = 
+		// High         Low          
+		  (0.7,         0.3);
+	whenchanged = 1509037248;
+	belief = (0.7, 0.3);
+	visual V1 {
+		center = (516, 96);
+		height = 2;
+		};
+	};
+
+node Technology {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (High, Low);
+	parents = ();
+	probs = 
+		// High         Low          
+		  (0.7,         0.3);
+	whenchanged = 1509037700;
+	belief = (0.7, 0.3);
+	visual V1 {
+		center = (504, 210);
+		height = 17;
+		};
+	};
+
+node Skill {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (High, Low);
+	parents = ();
+	probs = 
+		// High         Low          
+		  (0.4,         0.6);
+	whenchanged = 1509037731;
+	belief = (0.4, 0.6);
+	visual V1 {
+		center = (888, 276);
+		height = 14;
+		};
+	};
+
+node Manufacturing {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (High, Low);
+	parents = (MonetaryPolicy, FiscalPolicy, FOREX, Unemployment, Technology, Skill);
+	probs = 
+		// High         Low           // MonetaryPolicy   FiscalPolicy FOREX        Unemployment Technology Skill 
+		  (0.7,         0.3,          // FavourabletoGrow HighTaxes    Favourable   High         High       High  
+		   0.65,        0.35,         // FavourabletoGrow HighTaxes    Favourable   High         High       Low   
+		   0.65,        0.35,         // FavourabletoGrow HighTaxes    Favourable   High         Low        High  
+		   0.6,         0.4,          // FavourabletoGrow HighTaxes    Favourable   High         Low        Low   
+		   0.75,        0.25,         // FavourabletoGrow HighTaxes    Favourable   Low          High       High  
+		   0.7,         0.3,          // FavourabletoGrow HighTaxes    Favourable   Low          High       Low   
+		   0.7,         0.3,          // FavourabletoGrow HighTaxes    Favourable   Low          Low        High  
+		   0.65,        0.35,         // FavourabletoGrow HighTaxes    Favourable   Low          Low        Low   
+		   0.5,         0.5,          // FavourabletoGrow HighTaxes    Unfavourable High         High       High  
+		   0.45,        0.55,         // FavourabletoGrow HighTaxes    Unfavourable High         High       Low   
+		   0.45,        0.55,         // FavourabletoGrow HighTaxes    Unfavourable High         Low        High  
+		   0.5,         0.5,          // FavourabletoGrow HighTaxes    Unfavourable High         Low        Low   
+		   0.55,        0.45,         // FavourabletoGrow HighTaxes    Unfavourable Low          High       High  
+		   0.5,         0.5,          // FavourabletoGrow HighTaxes    Unfavourable Low          High       Low   
+		   0.5,         0.5,          // FavourabletoGrow HighTaxes    Unfavourable Low          Low        High  
+		   0.45,        0.55,         // FavourabletoGrow HighTaxes    Unfavourable Low          Low        Low   
+		   0.9,         0.1,          // FavourabletoGrow LowTaxes     Favourable   High         High       High  
+		   0.85,        0.15,         // FavourabletoGrow LowTaxes     Favourable   High         High       Low   
+		   0.85,        0.15,         // FavourabletoGrow LowTaxes     Favourable   High         Low        High  
+		   0.8,         0.2,          // FavourabletoGrow LowTaxes     Favourable   High         Low        Low   
+		   0.95,        0.05,         // FavourabletoGrow LowTaxes     Favourable   Low          High       High  
+		   0.9,         0.1,          // FavourabletoGrow LowTaxes     Favourable   Low          High       Low   
+		   0.9,         0.1,          // FavourabletoGrow LowTaxes     Favourable   Low          Low        High  
+		   0.85,        0.15,         // FavourabletoGrow LowTaxes     Favourable   Low          Low        Low   
+		   0.8,         0.2,          // FavourabletoGrow LowTaxes     Unfavourable High         High       High  
+		   0.75,        0.25,         // FavourabletoGrow LowTaxes     Unfavourable High         High       Low   
+		   0.75,        0.25,         // FavourabletoGrow LowTaxes     Unfavourable High         Low        High  
+		   0.7,         0.3,          // FavourabletoGrow LowTaxes     Unfavourable High         Low        Low   
+		   0.85,        0.15,         // FavourabletoGrow LowTaxes     Unfavourable Low          High       High  
+		   0.8,         0.2,          // FavourabletoGrow LowTaxes     Unfavourable Low          High       Low   
+		   0.8,         0.2,          // FavourabletoGrow LowTaxes     Unfavourable Low          Low        High  
+		   0.8,         0.2,          // FavourabletoGrow LowTaxes     Unfavourable Low          Low        Low   
+		   0.3,         0.7,          // Unfavourable     HighTaxes    Favourable   High         High       High  
+		   0.25,        0.75,         // Unfavourable     HighTaxes    Favourable   High         High       Low   
+		   0.25,        0.75,         // Unfavourable     HighTaxes    Favourable   High         Low        High  
+		   0.2,         0.8,          // Unfavourable     HighTaxes    Favourable   High         Low        Low   
+		   0.35,        0.65,         // Unfavourable     HighTaxes    Favourable   Low          High       High  
+		   0.3,         0.7,          // Unfavourable     HighTaxes    Favourable   Low          High       Low   
+		   0.3,         0.7,          // Unfavourable     HighTaxes    Favourable   Low          Low        High  
+		   0.25,        0.75,         // Unfavourable     HighTaxes    Favourable   Low          Low        Low   
+		   0.2,         0.8,          // Unfavourable     HighTaxes    Unfavourable High         High       High  
+		   0.15,        0.85,         // Unfavourable     HighTaxes    Unfavourable High         High       Low   
+		   0.15,        0.85,         // Unfavourable     HighTaxes    Unfavourable High         Low        High  
+		   0.1,         0.9,          // Unfavourable     HighTaxes    Unfavourable High         Low        Low   
+		   0.25,        0.75,         // Unfavourable     HighTaxes    Unfavourable Low          High       High  
+		   0.2,         0.8,          // Unfavourable     HighTaxes    Unfavourable Low          High       Low   
+		   0.2,         0.8,          // Unfavourable     HighTaxes    Unfavourable Low          Low        High  
+		   0.15,        0.85,         // Unfavourable     HighTaxes    Unfavourable Low          Low        Low   
+		   0.6,         0.4,          // Unfavourable     LowTaxes     Favourable   High         High       High  
+		   0.55,        0.45,         // Unfavourable     LowTaxes     Favourable   High         High       Low   
+		   0.55,        0.45,         // Unfavourable     LowTaxes     Favourable   High         Low        High  
+		   0.5,         0.5,          // Unfavourable     LowTaxes     Favourable   High         Low        Low   
+		   0.65,        0.35,         // Unfavourable     LowTaxes     Favourable   Low          High       High  
+		   0.6,         0.4,          // Unfavourable     LowTaxes     Favourable   Low          High       Low   
+		   0.6,         0.4,          // Unfavourable     LowTaxes     Favourable   Low          Low        High  
+		   0.55,        0.45,         // Unfavourable     LowTaxes     Favourable   Low          Low        Low   
+		   0.4,         0.6,          // Unfavourable     LowTaxes     Unfavourable High         High       High  
+		   0.35,        0.65,         // Unfavourable     LowTaxes     Unfavourable High         High       Low   
+		   0.35,        0.65,         // Unfavourable     LowTaxes     Unfavourable High         Low        High  
+		   0.3,         0.7,          // Unfavourable     LowTaxes     Unfavourable High         Low        Low   
+		   0.45,        0.55,         // Unfavourable     LowTaxes     Unfavourable Low          High       High  
+		   0.4,         0.6,          // Unfavourable     LowTaxes     Unfavourable Low          High       Low   
+		   0.4,         0.6,          // Unfavourable     LowTaxes     Unfavourable Low          Low        High  
+		   0.35,        0.65);        // Unfavourable     LowTaxes     Unfavourable Low          Low        Low   ;
+	numcases = 1;
+	whenchanged = 1509065816;
+	belief = (0.5511475, 0.4488525);
+	visual V1 {
+		center = (774, 450);
+		height = 12;
+		};
+	};
+
+node GlobalPolicies {
+	kind = NATURE;
+	discrete = TRUE;
+	states = (Favourable, Unfavourable);
+	parents = ();
+	whenchanged = 1509037507;
+	belief = (0.5, 0.5);
+	visual V1 {
+		center = (1314, 294);
+		height = 9;
+		};
+	};
+
+node ServiceSector {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (High, Low);
+	parents = (FOREX, FiscalPolicy, MonetaryPolicy, Skill, GlobalPolicies);
+	probs = 
+		// High         Low           // FOREX        FiscalPolicy MonetaryPolicy   Skill GlobalPolicies 
+		  (0.55,        0.45,         // Favourable   HighTaxes    FavourabletoGrow High  Favourable     
+		   0.5,         0.5,          // Favourable   HighTaxes    FavourabletoGrow High  Unfavourable   
+		   0.5,         0.5,          // Favourable   HighTaxes    FavourabletoGrow Low   Favourable     
+		   0.45,        0.55,         // Favourable   HighTaxes    FavourabletoGrow Low   Unfavourable   
+		   0.35,        0.65,         // Favourable   HighTaxes    Unfavourable     High  Favourable     
+		   0.3,         0.7,          // Favourable   HighTaxes    Unfavourable     High  Unfavourable   
+		   0.3,         0.7,          // Favourable   HighTaxes    Unfavourable     Low   Favourable     
+		   0.25,        0.75,         // Favourable   HighTaxes    Unfavourable     Low   Unfavourable   
+		   0.95,        0.05,         // Favourable   LowTaxes     FavourabletoGrow High  Favourable     
+		   0.9,         0.1,          // Favourable   LowTaxes     FavourabletoGrow High  Unfavourable   
+		   0.9,         0.1,          // Favourable   LowTaxes     FavourabletoGrow Low   Favourable     
+		   0.85,        0.15,         // Favourable   LowTaxes     FavourabletoGrow Low   Unfavourable   
+		   0.75,        0.25,         // Favourable   LowTaxes     Unfavourable     High  Favourable     
+		   0.7,         0.3,          // Favourable   LowTaxes     Unfavourable     High  Unfavourable   
+		   0.7,         0.3,          // Favourable   LowTaxes     Unfavourable     Low   Favourable     
+		   0.65,        0.35,         // Favourable   LowTaxes     Unfavourable     Low   Unfavourable   
+		   0.45,        0.55,         // Unfavourable HighTaxes    FavourabletoGrow High  Favourable     
+		   0.4,         0.6,          // Unfavourable HighTaxes    FavourabletoGrow High  Unfavourable   
+		   0.4,         0.6,          // Unfavourable HighTaxes    FavourabletoGrow Low   Favourable     
+		   0.35,        0.65,         // Unfavourable HighTaxes    FavourabletoGrow Low   Unfavourable   
+		   0.25,        0.75,         // Unfavourable HighTaxes    Unfavourable     High  Favourable     
+		   0.2,         0.8,          // Unfavourable HighTaxes    Unfavourable     High  Unfavourable   
+		   0.2,         0.8,          // Unfavourable HighTaxes    Unfavourable     Low   Favourable     
+		   0.15,        0.85,         // Unfavourable HighTaxes    Unfavourable     Low   Unfavourable   
+		   0.85,        0.15,         // Unfavourable LowTaxes     FavourabletoGrow High  Favourable     
+		   0.8,         0.2,          // Unfavourable LowTaxes     FavourabletoGrow High  Unfavourable   
+		   0.8,         0.2,          // Unfavourable LowTaxes     FavourabletoGrow Low   Favourable     
+		   0.85,        0.15,         // Unfavourable LowTaxes     FavourabletoGrow Low   Unfavourable   
+		   0.65,        0.35,         // Unfavourable LowTaxes     Unfavourable     High  Favourable     
+		   0.6,         0.4,          // Unfavourable LowTaxes     Unfavourable     High  Unfavourable   
+		   0.6,         0.4,          // Unfavourable LowTaxes     Unfavourable     Low   Favourable     
+		   0.55,        0.45);        // Unfavourable LowTaxes     Unfavourable     Low   Unfavourable   ;
+	numcases = 1;
+	whenchanged = 1509065829;
+	belief = (0.56725, 0.43275);
+	visual V1 {
+		center = (1230, 432);
+		height = 10;
+		};
+	};
+
+node GrowthRate {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (High, Moderate, Low);
+	parents = (UndergroundMarket, Agriculture, Manufacturing, ServiceSector);
+	probs = 
+		// High         Moderate     Low           // UndergroundMarket Agriculture Manufacturing ServiceSector 
+		  (0.85,        0.08,        0.07,         // High              High        High          High          
+		   0.9,         0.06,        0.04,         // High              High        High          Low           
+		   0.65,        0.22,        0.13,         // High              High        Low           High          
+		   0.35,        0.22,        0.43,         // High              High        Low           Low           
+		   0.75,        0.1,         0.15,         // High              Low         High          High          
+		   0.45,        0.12,        0.43,         // High              Low         High          Low           
+		   0.55,        0.12,        0.33,         // High              Low         Low           High          
+		   0.25,        0.07,        0.68,         // High              Low         Low           Low           
+		   0.9,         0.06,        0.04,         // Low               High        High          High          
+		   0.6,         0.1,         0.3,          // Low               High        High          Low           
+		   0.7,         0.12,        0.18,         // Low               High        Low           High          
+		   0.4,         0.2,         0.4,          // Low               High        Low           Low           
+		   0.75,        0.1,         0.15,         // Low               Low         High          High          
+		   0.5,         0.1,         0.4,          // Low               Low         High          Low           
+		   0.6,         0.1,         0.3,          // Low               Low         Low           High          
+		   0.3,         0.05,        0.65);        // Low               Low         Low           Low           ;
+	numcases = 1;
+	whenchanged = 1509065786;
+	belief = (0.6330425, 0.1160062, 0.2509513);
+	visual V1 {
+		center = (696, 678);
+		height = 7;
+		};
+	};
+
+node LiteracyRates {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (High, Low);
+	parents = ();
+	probs = 
+		// High         Low          
+		  (0.4,         0.6);
+	whenchanged = 1509037745;
+	belief = (0.4, 0.6);
+	visual V1 {
+		center = (1098, 294);
+		height = 11;
+		};
+	};
+
+node Capital {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (High, Low);
+	parents = ();
+	probs = 
+		// High         Low          
+		  (0.7,         0.3);
+	whenchanged = 1509037718;
+	belief = (0.7, 0.3);
+	visual V1 {
+		center = (684, 276);
+		height = 13;
+		};
+	};
+ElimOrder = (LiteracyRates, Capital, UndergroundMarket, Inflation, NaturalDisasters, Rainfall, GlobalPolicies, GrowthRate, Agriculture, Unemployment, Technology, MonetaryPolicy, FiscalPolicy, FOREX, Skill, Manufacturing, ServiceSector);
+};

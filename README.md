@@ -1,0 +1,1 @@
+Bayesian growth rate predictor is a probabilistic inference system that predicts the whether growth rate would be high, moderate or low and gives the probability of them happening.
